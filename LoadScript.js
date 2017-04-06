@@ -93,13 +93,7 @@ var LoadTemplet = function (pool, sqlModuleCache, act, postData, callback) {
 
                 } else {
 
-
-
-
                     r = ParseSqlParameters(data, postData);
-
-
-
                     if (r.err > 0) {
                         callback(err, '', -1, 'Script Parameters missing.');
 

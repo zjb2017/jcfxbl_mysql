@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<SqlScript Name="InsertHYXX" type="StoredProcedure">
+  <Command>call testdb.ACT_ADD_HY(@XM,@XB,@DZ,@returnValue, @returnMsg);</Command>
+  <Parameters>
+    <par name="@XM" type="string" dir="IN"/>
+    <par name="@XB" type="string" dir="IN"/>
+    <par name="@DZ" type="string" dir="IN"/>
+    <par name="@returnValue" type="int"  dir="OUT"/>
+    <par name="@returnMsg" type="string" dir="OUT"/>
+  </Parameters>
+  <ResultType>JSON</ResultType>
+  <Detail author="" LastEditTime="">
+    <![CDATA[
+        djdjjjdjdj
+    ]]>    
+  </Detail>
+</SqlScript>

@@ -134,10 +134,13 @@ var LoadTemplet = function (pool, sqlModuleCache, act, postData, callback) {
                                                     result.PacketCount = result.length;
                                                     callback(err, result, returnValue, returnMsg);
                                                 }
+
+
+                                                connection.release();
                                             });
 
 
-                                            connection.release();
+
                                         }
                                         else {
 
@@ -148,9 +151,11 @@ var LoadTemplet = function (pool, sqlModuleCache, act, postData, callback) {
                                         }
 
                                     }
+
+                                    if (ScriptType != 'StoredProcedure')
+                                        connection.release();
                                 });
-                                if (ScriptType != 'StoredProcedure')
-                                    connection.release();
+
                             }
 
                         });

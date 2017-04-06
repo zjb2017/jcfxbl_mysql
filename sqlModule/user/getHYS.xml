@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <SqlScript Name="FindStudentByID">
   <Command>select * from t_hyb;</Command>
-  <Parameters>
-    <par name="@ID" type="string"/>
-    <par name="@DZ" type="string"/>
-  </Parameters>
+  
   <ResultType>JSON</ResultType>
   <Detail author="" LastEditTime="">
     <![CDATA[

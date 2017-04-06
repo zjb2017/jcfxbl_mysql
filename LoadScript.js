@@ -13,6 +13,7 @@ function ParseSqlParameters(Template, postData) {
     var ResultType = Template['SqlScript']['ResultType'];
     var sql = Command[0].toString();
     var selectSql = '';//select @returnValue, @returnMsg;
+
     if (Parameters.length == 1) {
         for (var i = 0; i < Parameters[0].par.length; i++) {
             //https://www.npmjs.com/package/xml2js
@@ -24,6 +25,8 @@ function ParseSqlParameters(Template, postData) {
             var par_value = postData[par_name.replace('@', '')];
             if (typeof (par_value) == 'undefined') {
                 console.log('Parameter ' + par_name + ' undefined');
+                r.err = 1;
+                return r;
             } else {
                 sql = sql.replace(par_name, mysql.escape(par_value));
             }
@@ -50,10 +53,10 @@ var LoadTemplet = function (pool, sqlModuleCache, act, postData, callback) {
     fs.exists(path, function (exists) {
         if (!exists) {
             debug("Internal server error,Template file [%s] not found", path);
-            err_msg = 'Internal server error: act '+act+' unrecognized';
+            err_msg = 'Internal server error: act ' + act + ' unrecognized';
             err_code = 1;
 
-             callback(1, '', -1, err_msg);
+            callback(1, '', -1, err_msg);
         }
         else {
             var moduleFileData;
@@ -79,6 +82,11 @@ var LoadTemplet = function (pool, sqlModuleCache, act, postData, callback) {
 
                 } else {
                     var r = ParseSqlParameters(data, postData);
+
+                    if (r.err > 0) {
+                        callback(err, '', -1, 'Script Parameters missing.');
+                    }
+
                     sql = r.sql;
                     selectSql = r.selectSql;
                     ScriptType = r.ScriptType;
@@ -110,7 +118,7 @@ var LoadTemplet = function (pool, sqlModuleCache, act, postData, callback) {
                                                 var result = rows[0];
                                                 var returnValue = return_rows[0]['@returnValue'];
                                                 var returnMsg = return_rows[0]['@returnMsg'];
-                                                result.returnCount=result.length;
+                                                result.returnCount = result.length;
                                                 callback(err, result, returnValue, returnMsg);
                                             }
                                         });
@@ -118,7 +126,7 @@ var LoadTemplet = function (pool, sqlModuleCache, act, postData, callback) {
                                     else {
 
                                         var result = rows;
-                                        result.returnCount=result.length;
+                                        result.returnCount = result.length;
                                         callback(err, result, 1, 'QueryOK');
 
                                     }

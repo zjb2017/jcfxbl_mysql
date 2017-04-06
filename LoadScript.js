@@ -118,6 +118,8 @@ var LoadTemplet = function (pool, sqlModuleCache, act, postData, callback) {
                         console.log('Database connection failed');
                         callback(err, '', -1, 'Database connection failed');
                         //callback(err, 'Database connection failed');
+                        connection.release();
+                        return;
                     }
                     else {
                         connection.query(sql, function (err, rows, fields) {
@@ -125,6 +127,8 @@ var LoadTemplet = function (pool, sqlModuleCache, act, postData, callback) {
                                 debug("err:%O,%O,Query data failed：%s", err, rows, sql);
                                 //callback(err, 'Query data failed.');
                                 callback(err, '', -2, 'Query data failed.');
+                                connection.release();
+                                return;
                             } else {
                                 debug("Prepare Query [%s] successfully", sql);
                                 if (ScriptType == 'StoredProcedure') {

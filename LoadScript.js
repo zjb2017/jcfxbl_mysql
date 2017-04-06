@@ -135,29 +135,19 @@ var LoadTemplet = function (pool, sqlModuleCache, act, postData, callback) {
                                                     callback(err, result, returnValue, returnMsg);
                                                 }
 
-
                                                 connection.release();
                                             });
-
-
-
                                         }
                                         else {
 
                                             var result = rows;
                                             result.PacketCount = result.length;
                                             callback(err, result, 1, 'QueryOK');
-
+                                            connection.release();
                                         }
-
                                     }
-
-                                    if (ScriptType != 'StoredProcedure')
-                                        connection.release();
                                 });
-
                             }
-
                         });
                     }
                 }

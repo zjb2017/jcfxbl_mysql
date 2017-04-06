@@ -23,16 +23,18 @@ function ParseSqlParameters(Template, postData) {
             var par_type = par.type;
             var par_dir = par.dir;
             var par_value = postData[par_name.replace('@', '')];
-            if (typeof (par_value) == 'undefined') {
-                console.log('Parameter ' + par_name + ' undefined');
-                r.err = 1;
-                return r;
-            } else {
-                sql = sql.replace(par_name, mysql.escape(par_value));
-            }
+
             if (par_dir == 'OUT') {
                 if (selectSql == '') selectSql = 'select ';
                 selectSql += par_name + ',';
+            } else {
+                if (typeof (par_value) == 'undefined') {
+                    console.log('Parameter ' + par_name + ' undefined');
+                    r.err = 1;
+                    return r;
+                } else {
+                    sql = sql.replace(par_name, mysql.escape(par_value));
+                }
             }
             //debug('name:%s,value:%s', par.name, par.type);
         }
@@ -115,10 +117,11 @@ var LoadTemplet = function (pool, sqlModuleCache, act, postData, callback) {
                                             } else {
                                                 debug("Prepare Query [%s] successfully", selectSql);
                                                 //callback(0, rows);
-                                                var result = rows[0];
+                                                var result = rows;
                                                 var returnValue = return_rows[0]['@returnValue'];
                                                 var returnMsg = return_rows[0]['@returnMsg'];
-                                                result.returnCount = result.length;
+
+                                                result.PacketCount = result.length;
                                                 callback(err, result, returnValue, returnMsg);
                                             }
                                         });
@@ -126,7 +129,7 @@ var LoadTemplet = function (pool, sqlModuleCache, act, postData, callback) {
                                     else {
 
                                         var result = rows;
-                                        result.returnCount = result.length;
+                                        result.PacketCount = result.length;
                                         callback(err, result, 1, 'QueryOK');
 
                                     }

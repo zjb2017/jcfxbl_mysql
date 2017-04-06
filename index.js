@@ -27,7 +27,7 @@ function res(success, returnValue, returnMsg, returnMsgCode, returnResult) {
     r.returnMsg = returnMsg;
     r.returnMsgCode = returnMsgCode;
     r.returnResult = returnResult;
-    r.returnCount = returnResult.returnCount;
+    r.PacketCount = returnResult.PacketCount;
     /* if (typeof (returnResult.length) == 'undefined') {
          r.returnCount = 0;
      } else {

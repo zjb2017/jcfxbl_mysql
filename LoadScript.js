@@ -102,8 +102,6 @@ var LoadTemplet = function (pool, sqlModuleCache, act, postData, callback) {
                         sql = r.sql;
                         selectSql = r.selectSql;
                         ScriptType = r.ScriptType;
-
-
                         pool.getConnection(function (err, connection) {
                             if (err) {
                                 console.log('Database connection failed');
@@ -111,50 +109,48 @@ var LoadTemplet = function (pool, sqlModuleCache, act, postData, callback) {
                                 //callback(err, 'Database connection failed');
                             }
                             else {
+                                connection.query(sql, function (err, rows, fields) {
+                                    if (err) {
+                                        debug("err:%O,%O,Query data failed：%s", err, rows, sql);
+                                        //callback(err, 'Query data failed.');
+                                        callback(err, '', -2, 'Query data failed.');
+                                    } else {
+                                        debug("Prepare Query [%s] successfully", sql);
+                                        if (ScriptType == 'StoredProcedure') {
+
+                                            selectSql = selectSql.substring(0, selectSql.length - 1) + ';';
+                                            connection.query(selectSql, function (err, return_rows, fields) {
+                                                if (err) {
+                                                    console.log('Query data failed：' + selectSql);
+                                                    //callback(err, 'Query data failed.');
+                                                    callback(err, '', -3, 'Query data failed');
+                                                } else {
+                                                    debug("Prepare Query [%s] successfully", selectSql);
+                                                    //callback(0, rows);
+                                                    var result = rows;
+                                                    var returnValue = return_rows[0]['@returnValue'];
+                                                    var returnMsg = return_rows[0]['@returnMsg'];
+
+                                                    result.PacketCount = result.length;
+                                                    callback(err, result, returnValue, returnMsg);
+                                                }
+                                            });
 
 
-                                //connection.query();
-                                if (ScriptType == 'StoredProcedure') {
-
-                                    selectSql = selectSql.substring(0, selectSql.length - 1) + ';';
-                                    connection.query(sql + selectSql, function (err, return_rows, fields) {
-                                        if (err) {
-                                            console.log('Query data failed：' + selectSql);
-                                            //callback(err, 'Query data failed.');
-                                            callback(err, '', -3, 'Query data failed');
-                                        } else {
-                                            debug("Prepare Query [%s] successfully", selectSql);
-                                            //callback(0, rows);
-                                            var result = rows;
-                                            var returnValue = return_rows[0]['@returnValue'];
-                                            var returnMsg = return_rows[0]['@returnMsg'];
-
-                                            result.PacketCount = result.length;
-                                            callback(err, result, returnValue, returnMsg);
+                                            connection.release();
                                         }
-                                         connection.release();
-                                    });
+                                        else {
 
-                                   
-
-                                }
-                                else {
-                                    connection.query(sql, function (err, rows, fields) {
-                                        if (err) {
-                                            debug("err:%O,%O,Query data failed：%s", err, rows, sql);
-                                            //callback(err, 'Query data failed.');
-                                            callback(err, '', -2, 'Query data failed.');
-                                        } else {
                                             var result = rows;
                                             result.PacketCount = result.length;
                                             callback(err, result, 1, 'QueryOK');
+
                                         }
 
-                                         connection.release();
-                                    });
-                                   
-                                }
-
+                                    }
+                                });
+                                if (ScriptType != 'StoredProcedure')
+                                    connection.release();
                             }
 
                         });

@@ -102,16 +102,7 @@ http.createServer(
                             }
                         });//xmlJS.parseString
                     }
-                    /*LoadScript.TempletScriptExecute(pool, sqlModuleCache, act, postData, 
-                    function (err, returnValue, returnMsg,returnResult) {
-                        if (err.code>0) {
-                            console.log('ERR_TEMPLET_EXECUTE_FAILED:'+err.msg);
-                            response.end(res('failed','ERR_TEMPLET_EXECUTE_FAILED:'+err.msg));
-                        } else {
-                            response.end(res('success','OK_DL', returnValue, returnMsg, returnResult));
-                        }
-                    });
-*/
+
                     break;
                 }
                 case 'bi': {
@@ -127,11 +118,8 @@ http.createServer(
                 }
                 default:
                     {
-
                         console.log('ERR_REQ_TYPE_UNKNOWN :[' + actType + ']');
-                        var r = res('failed', 'ERR_REQ_TYPE_UNKNOWN');
-                        response.end(r);
-                        return;
+                        Response(response, 'failed', 'ERR_REQ_TYPE_UNKNOWN', null, null, null);
                         break;
                     }
             }

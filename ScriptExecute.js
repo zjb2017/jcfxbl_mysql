@@ -89,12 +89,10 @@ var ScriptExecute = function (Template, postData, callback) {
                         conn.release();
 
                     } else {
-
                         var returnValue;
                         var returnMsg;
                         var Result = {};
                         var returnResult = {};
-                        console.log('release');
                         for (var i = 0; i < rows.length; i++) {
                             if (rows[i].__proto__.constructor.name == 'OkPacket') {
                                 returnResult['PAMROutPut'] = rows[i + 1];
@@ -102,7 +100,6 @@ var ScriptExecute = function (Template, postData, callback) {
                             } else {
                                 Result[i] = rows[i];
                             }
-                            console.log();
                         }
                         //释放连接  
                         returnResult['Result'] = Result;

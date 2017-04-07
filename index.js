@@ -13,6 +13,8 @@ var port = 1088;
 
 var sqlModuleCache = {};
 
+var req_count = 0;
+var req_count_success = 0;
 
 function Response(res, success, ErrCode, returnValue, returnMsg, returnResult) {
     var r = {};
@@ -64,6 +66,8 @@ http.createServer(
         });
 
         request.addListener("end", function () {
+            req_count++;
+
             var postData = querystring.parse(postStr);
             var urlParams = url.parse(request.url, true);
             var act = urlParams.query.act; //指令
@@ -90,11 +94,11 @@ http.createServer(
                                 debug('%s', data);
                                 Response(response, 'failed', 'ERR_TEMPLET_XML_PARSE_FAILED', null, null, null);
                             } else {
-
                                 ScriptExecute(data, postData, function (ErrCode, returnValue, returnMsg, returnResult) {
                                     if (ErrCode) {
                                         Response(response, 'failed', ErrCode, null, null, null);
                                     } else {
+                                        req_count_success++;
                                         Response(response, 'success', null, returnValue, returnMsg, returnResult);
                                     }
                                 });
@@ -130,3 +134,22 @@ http.createServer(
 
 
 console.log('JCServer listen:' + port);
+
+
+var TimerTick =1000 * 60;
+var mydate_t0 = new Date();
+
+setInterval(function () {
+
+    var mydate = new Date();
+    var hh = mydate.getHours() - mydate_t0.getHours();
+    var mm = mydate.getMinutes() - mydate_t0.getMinutes();
+    var ss = mydate.getSeconds() - mydate_t0.getSeconds();
+    var T = ss + mm * 60 + hh * 60 * 60;
+
+    console.log('Time:' + T + 'S req_count' + req_count +'('+req_count/T+ '/s) success:' + req_count_success+'('+req_count_success/T+ '/s)');
+    req_count = 0;
+    req_count_success = 0;
+    mydate_t0 = new Date();
+
+}, TimerTick);

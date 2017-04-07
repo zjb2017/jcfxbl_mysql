@@ -1,16 +1,9 @@
 var debug = require('debug')('jcSerlet:LoadScript');
-
 var xmlJS = require('xml2js');
-//var mysql = require('mysql');
 var util = require('util');
-//var JCDB = require('./JCDB.js');
-
 var config = require('./config.js');
-//var debug = require('debug')('jcSerlet:JCDB');
-
 //https://github.com/mysqljs/mysql/issues/682
 //https://github.com/mysqljs/mysql/issues/1122
-
 var mysql = require('mysql');
 var pool = mysql.createPool({
     //connectionLimit: 10,
@@ -23,13 +16,10 @@ var pool = mysql.createPool({
     multipleStatements: true
 });
 
-
 function ParseSqlParameters(Template, postData) {
     var r = {};
     r.ErrCode = 0;
     r.ErrMsg = null;
-
-
     try {
         var ScriptType = Template['SqlScript'].$['type'];
         var Command = Template['SqlScript']['Command'];
@@ -37,7 +27,6 @@ function ParseSqlParameters(Template, postData) {
         var ResultType = Template['SqlScript']['ResultType'];
         var sql = Command[0].toString();
         var selectSql = '';//select @returnValue, @returnMsg;
-
         if (typeof (Parameters) != 'undefined')
             if (Parameters.length == 1 && typeof (Parameters[0].par) != 'undefined') {
                 for (var i = 0; i < Parameters[0].par.length; i++) {
@@ -56,34 +45,24 @@ function ParseSqlParameters(Template, postData) {
                             console.log('ERR_PARAM_UNDEFINED:' + par_name);
                             r.ErrCode = 1;
                             r.ErrMsg = 'ERR_PARAM_UNDEFINED';
-
                         } else {
                             sql = sql.replace(par_name, mysql.escape(par_value));
                         }
                     }
                     //debug('name:%s,value:%s', par.name, par.type);
                 }
-
-
                 if (selectSql.length > 0) {
                     selectSql = selectSql.substring(0, selectSql.length - 1) + ';';
                 }
-
-
             }
-
     } catch (err) {
         r.ErrCode = 1;
         r.ErrMsg = 'ERR_TEMPLET_PARAM_PARSE';
     }
-
     r.sql = sql;
     r.selectSql = selectSql;
     return r;
 }
-
-
-
 
 var ScriptExecute = function (Template, postData, callback) {
     //callback=function (ErrCode, returnValue, returnMsg, returnResult)
@@ -92,7 +71,6 @@ var ScriptExecute = function (Template, postData, callback) {
     if (r.ErrCode > 0) {
         callback(r.ErrMsg, null, null, null);
     } else {
-
         var ScriptType = r.ScriptType;
         var sql = r.sql + r.selectSql;
         pool.getConnection(function (err, conn) {

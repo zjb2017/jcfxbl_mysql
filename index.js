@@ -6,7 +6,7 @@ var debug = require('debug')('jcSerlet:main');
 var fs = require("fs");
 var xmlJS = require('xml2js');
 
-var ScriptExecute = require('./LoadScript.js').ScriptExecute;
+var ScriptExecute = require('./ScriptExecute.js').ScriptExecute;
 
 var port = 1088;
 

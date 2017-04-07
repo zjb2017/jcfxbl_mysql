@@ -2,50 +2,61 @@ var http = require('http');
 var querystring = require('querystring');
 var util = require('util');
 var url = require('url');
-
 var debug = require('debug')('jcSerlet:main');
 var fs = require("fs");
 var xmlJS = require('xml2js');
 
-var JCDB = require('./JCDB.js');
-
-var LoadScript = require('./LoadScript.js');
-
+var ScriptExecute = require('./LoadScript.js').ScriptExecute;
 
 var port = 1088;
 
 
-var pool = JCDB.initPool();
-
 var sqlModuleCache = {};
 
 
-function res(success, returnValue, returnMsg, returnMsgCode, returnResult) {
+function Response(res, success, ErrCode, returnValue, returnMsg, returnResult) {
     var r = {};
-    r.success = success;//success / failed
-    r.returnValue = returnValue;
-    r.returnMsg = returnMsg;
-    r.returnMsgCode = returnMsgCode;
-    r.returnResult = returnResult;
-    r.PacketCount = returnResult.PacketCount;
-    /* if (typeof (returnResult.length) == 'undefined') {
-         r.returnCount = 0;
-     } else {
-         r.returnCount = returnResult.length;
-     }*/
+    r.success = success;            //业务层成功标示(success/failed)
+    r.ErrCode = ErrCode;            //错误代码（业务层／数据层）
+    if (r.success == 'success') {
+        r.returnValue = returnValue;      //查询返回值（查询／存储过程）
+        r.returnMsg = returnMsg;          //查询返回值（存储过程）
+        r.returnResult = returnResult;    //查询返回数据集
+        //r.PacketCount = returnResult.PacketCount;
+    } else {
+        r.returnValue = '';      //查询返回值（查询／存储过程）
+        r.returnMsg = '';          //查询返回值（存储过程）
+        r.returnResult = [];    //查询返回数据集
+        r.PacketCount = 0;
+    }
+    var resdata = JSON.stringify(r);
 
-    return JSON.stringify(r);
+    res.end(resdata);
+}
+
+
+function LoadTempletScript(act) {
+    if (typeof (sqlModuleCache[act]) == 'undefined') {
+        //https://nodejs.org/dist/latest-v6.x/docs/api/fs.html
+        var path = util.format('./sqlModule/%s.xml', act.replace('.', '/'));
+        if (fs.existsSync(path)) {
+            moduleFileData = fs.readFileSync(path);
+            sqlModuleCache[act] = moduleFileData.toString();
+            debug('Template [%s] Load OK.', path);
+        } else {
+            debug("ERR_TEMPLET_FILE_READ_FAILED:[%s]", path);
+            return null;
+        }
+    } else {
+        moduleFileData = sqlModuleCache[act];
+        debug('Template Cache [%s] Read OK.', act);
+    }
+
+    return sqlModuleCache[act];
 }
 
 http.createServer(
     function (request, response) {
-        var success;  //业务层请求成功标示
-        var returnValue;
-        var returnMsg;
-        var returnMsgCode;
-        var returnResult = {};
-        var returnCount;
-
         var postStr = '';
         request.setEncoding('utf8');
         request.addListener("data", function (chunk) {
@@ -55,33 +66,52 @@ http.createServer(
         request.addListener("end", function () {
             var postData = querystring.parse(postStr);
             var urlParams = url.parse(request.url, true);
-
             var act = urlParams.query.act; //指令
             var actType = urlParams.query.type;//指令类别
-
             if (typeof (act) == 'undefined' || act == '' || act == null) {
-                console.log('warning act : undefined');
-                var r = res('failed', '0', 'warning :act undefined', '500', '');
-                response.end(r);
+                console.log('ERR_REQ_ACT_UNDEFINED' + ':' + act);
+                Response(response, 'failed', 'ERR_REQ_ACT_UNDEFINED', null, null, null);
                 return;
             }
             if (typeof (actType) == 'undefined' || actType == '' || actType == null) {
-                console.log('warning Type: undefined');
-                var r = res('failed', '0', 'warning :type undefined', '500', '');
-                response.end(r);
+                console.log('ERR_REQ_TYPE_UNDEFINED' + ':' + actType);
+                Response(response, 'failed', 'ERR_REQ_TYPE_UNDEFINED', null, null, null);
                 return;
             }
             switch (actType) {
                 case 'dl': {
-                    LoadScript.LoadTemplet(pool, sqlModuleCache, act, postData, function (err, result, returnValue, returnMsg) {
+                    var TemplateScript = LoadTempletScript(act);
+                    if (TemplateScript == null) {
+                        Response(response, 'failed', 'ERR_TEMPLET_FILE_READ_FAILED', null, null, null);
+                    } else {
+                        xmlJS.parseString(moduleFileData, function (err, data) {
+                            if (err) {
+                                console.log('ERR_TEMPLET_XML_PARSE_FAILED:' + act);
+                                debug('%s', data);
+                                Response(response, 'failed', 'ERR_TEMPLET_XML_PARSE_FAILED', null, null, null);
+                            } else {
 
-                        if (err) {
-                            response.end(res('failed', returnValue, returnMsg, returnMsgCode, result));
+                                ScriptExecute(data, postData, function (ErrCode, returnValue, returnMsg, returnResult) {
+                                    if (ErrCode) {
+                                        Response(response, 'failed', ErrCode, null, null, null);
+                                    } else {
+                                        Response(response, 'success', null, returnValue, returnMsg, returnResult);
+                                    }
+                                });
+
+                            }
+                        });//xmlJS.parseString
+                    }
+                    /*LoadScript.TempletScriptExecute(pool, sqlModuleCache, act, postData, 
+                    function (err, returnValue, returnMsg,returnResult) {
+                        if (err.code>0) {
+                            console.log('ERR_TEMPLET_EXECUTE_FAILED:'+err.msg);
+                            response.end(res('failed','ERR_TEMPLET_EXECUTE_FAILED:'+err.msg));
                         } else {
-                            response.end(res('success', returnValue, returnMsg, returnMsgCode, result));
+                            response.end(res('success','OK_DL', returnValue, returnMsg, returnResult));
                         }
                     });
-
+*/
                     break;
                 }
                 case 'bi': {
@@ -98,17 +128,15 @@ http.createServer(
                 default:
                     {
 
-                        console.log('warning type[' + actType + '] : unrecognized');
-                        var r = res('failed', '0', 'warning :type unrecognized', '400', '');
+                        console.log('ERR_REQ_TYPE_UNKNOWN :[' + actType + ']');
+                        var r = res('failed', 'ERR_REQ_TYPE_UNKNOWN');
                         response.end(r);
                         return;
                         break;
                     }
             }
-
             //console.log('request end');
         });
-
     }
 ).listen(port);
 

@@ -147,7 +147,7 @@ setInterval(function () {
     var ss = mydate.getSeconds() - mydate_t0.getSeconds();
     var T = ss + mm * 60 + hh * 60 * 60;
 
-    console.log('[' + hh+':'+mm+':'+ss + '] S req_count： ' + req_count +'('+req_count/T+ '/s) success:' + req_count_success+'('+req_count_success/T+ '/s)');
+    console.log('[' + mydate_t0.getHours()+':'+mydate_t0.getMinutes()+':'+mydate_t0.getSeconds() + '] S req_count： ' + req_count +'('+req_count/T+ '/s) success:' + req_count_success+'('+req_count_success/T+ '/s)');
     req_count = 0;
     req_count_success = 0;
     mydate_t0 = new Date();

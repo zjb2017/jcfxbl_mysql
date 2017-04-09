@@ -59,76 +59,83 @@ function LoadTempletScript(act) {
 
 var server = http.createServer(
     function (request, response) {
-        var postStr = '';
-        request.setEncoding('utf8');
-        request.addListener("data", function (chunk) {
-            postStr += chunk;
-        });
+        try {
+            var postStr = '';
+            request.setEncoding('utf8');
+            request.addListener("data", function (chunk) {
+                postStr += chunk;
+            });
 
-        request.addListener("end", function () {
-            req_count++;
+            request.addListener("end", function () {
+                req_count++;
 
-            var postData = querystring.parse(postStr);
-            var urlParams = url.parse(request.url, true);
-            var act = urlParams.query.act; //指令
-            var actType = urlParams.query.type;//指令类别
-            if (typeof (act) == 'undefined' || act == '' || act == null) {
-                console.log('ERR_REQ_ACT_UNDEFINED' + ':' + act);
-                Response(response, 'failed', 'ERR_REQ_ACT_UNDEFINED', null, null, null);
-                return;
-            }
-            if (typeof (actType) == 'undefined' || actType == '' || actType == null) {
-                console.log('ERR_REQ_TYPE_UNDEFINED' + ':' + actType);
-                Response(response, 'failed', 'ERR_REQ_TYPE_UNDEFINED', null, null, null);
-                return;
-            }
-            switch (actType) {
-                case 'dl': {
-                    var TemplateScript = LoadTempletScript(act);
-                    if (TemplateScript == null) {
-                        Response(response, 'failed', 'ERR_TEMPLET_FILE_READ_FAILED', null, null, null);
-                    } else {
-                        xmlJS.parseString(moduleFileData, function (err, data) {
-                            if (err) {
-                                console.log('ERR_TEMPLET_XML_PARSE_FAILED:' + act);
-                                debug('%s', data);
-                                Response(response, 'failed', 'ERR_TEMPLET_XML_PARSE_FAILED', null, null, null);
-                            } else {
-                                ScriptExecute(data, postData, function (ErrCode, returnValue, returnMsg, returnResult) {
-                                    if (ErrCode) {
-                                        Response(response, 'failed', ErrCode, null, null, null);
-                                    } else {
-                                        req_count_success++;
-                                        Response(response, 'success', null, returnValue, returnMsg, returnResult);
-                                    }
-                                });
-
-                            }
-                        });//xmlJS.parseString
-                    }
-
-                    break;
+                var postData = querystring.parse(postStr);
+                var urlParams = url.parse(request.url, true);
+                var act = urlParams.query.act; //指令
+                var actType = urlParams.query.type;//指令类别
+                if (typeof (act) == 'undefined' || act == '' || act == null) {
+                    console.log('ERR_REQ_ACT_UNDEFINED' + ':' + act);
+                    Response(response, 'failed', 'ERR_REQ_ACT_UNDEFINED', null, null, null);
+                    return;
                 }
-                case 'bi': {
-                    ///
-                    //https://github.com/mysqljs/mysql/blob/master/test/integration/connection/test-procedure-with-multiple-selects.js
-                    //var sql = util.format('call %()', act);
-                    ///
-                    break;
+                if (typeof (actType) == 'undefined' || actType == '' || actType == null) {
+                    console.log('ERR_REQ_TYPE_UNDEFINED' + ':' + actType);
+                    Response(response, 'failed', 'ERR_REQ_TYPE_UNDEFINED', null, null, null);
+                    return;
                 }
-                case 'developer': {
+                switch (actType) {
+                    case 'dl': {
+                        var TemplateScript = LoadTempletScript(act);
+                        if (TemplateScript == null) {
+                            Response(response, 'failed', 'ERR_TEMPLET_FILE_READ_FAILED', null, null, null);
+                        } else {
+                            xmlJS.parseString(moduleFileData, function (err, data) {
+                                if (err) {
+                                    console.log('ERR_TEMPLET_XML_PARSE_FAILED:' + act);
+                                    debug('%s', data);
+                                    Response(response, 'failed', 'ERR_TEMPLET_XML_PARSE_FAILED', null, null, null);
+                                } else {
+                                    ScriptExecute(data, postData, function (ErrCode, returnValue, returnMsg, returnResult) {
+                                        if (ErrCode) {
+                                            Response(response, 'failed', ErrCode, null, null, null);
+                                        } else {
+                                            req_count_success++;
+                                            Response(response, 'success', null, returnValue, returnMsg, returnResult);
+                                        }
+                                    });
 
-                    break;
-                }
-                default:
-                    {
-                        console.log('ERR_REQ_TYPE_UNKNOWN :[' + actType + ']');
-                        Response(response, 'failed', 'ERR_REQ_TYPE_UNKNOWN', null, null, null);
+                                }
+                            });//xmlJS.parseString
+                        }
+
                         break;
                     }
-            }
-            //console.log('request end');
-        });
+                    case 'bi': {
+                        ///
+                        //https://github.com/mysqljs/mysql/blob/master/test/integration/connection/test-procedure-with-multiple-selects.js
+                        //var sql = util.format('call %()', act);
+                        ///
+                        break;
+                    }
+                    case 'developer': {
+
+                        break;
+                    }
+                    default:
+                        {
+                            console.log('ERR_REQ_TYPE_UNKNOWN :[' + actType + ']');
+                            Response(response, 'failed', 'ERR_REQ_TYPE_UNKNOWN', null, null, null);
+                            break;
+                        }
+                }
+                //console.log('request end');
+            });
+        }
+        catch (err) {
+
+            //服务器错误
+            console.log(err.stack);
+        }
     }
 );//.listen(port);
 
@@ -139,7 +146,7 @@ server.listen(port);
 console.log('JCServer listen:' + port);
 
 
-var TimerTick =1000 * 60;
+var TimerTick = 1000 * 60;
 var mydate_t0 = new Date();
 
 setInterval(function () {
@@ -150,7 +157,7 @@ setInterval(function () {
     var ss = mydate.getSeconds() - mydate_t0.getSeconds();
     var T = ss + mm * 60 + hh * 60 * 60;
 
-    console.log('[' + mydate_t0.getHours()+':'+mydate_t0.getMinutes()+':'+mydate_t0.getSeconds() + '] S req_count： ' + req_count +'('+req_count/T+ '/s) success:' + req_count_success+'('+req_count_success/T+ '/s)');
+    console.log('[' + mydate_t0.getHours() + ':' + mydate_t0.getMinutes() + ':' + mydate_t0.getSeconds() + '] S req_count： ' + req_count + '(' + req_count / T + '/s) success:' + req_count_success + '(' + req_count_success / T + '/s)');
     req_count = 0;
     req_count_success = 0;
     mydate_t0 = new Date();

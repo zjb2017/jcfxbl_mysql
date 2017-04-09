@@ -111,3 +111,38 @@ siege -c 1000 -t 5s URL
 
 ab -n 100000  -c 800 -p 'post.txt' -T 'application/x-www-form-urlencoded' 'http://118.190.114.124:1089/?type=dl&act=user.InsertHYXX'
 
+
+
+ETIMEDOUT
+
+
+
+ERR_REQ_ACT_UNDEFINED           客户端ACT参数未定义
+ERR_REQ_TYPE_UNDEFINED          客户端TYEP参数未定义
+
+ERR_REQ_TYPE_UNKNOWN            未知TYPE值
+
+ERR_PARAM_UNDEFINED             参数未定义
+
+ERR_TEMPLET_PARAM_PARSE_FAILED  模版文件参数解析错误
+ERR_TEMPLET_XML_PARSE_FAILED    模版文件XML内容解析错误
+ERR_TEMPLET_FILE_READ_FAILED    模版文件读取失败
+ERR_TEMPLET_EXECUTE_FAILED      模版文件脚本调用失败
+
+ERR_DB_CONNECT_FAILED           数据库连接失败
+ERR_DB_QUERY_FAILED             数据查询失败
+ERR_DB_QUERY_PRO_RE_FAILED      存储过程返回值查询失败
+
+OK_DB_QUERY                     数据库查询成功
+OK_DB_PROCED                    存储过程调用成功
+
+
+OK_DL
+
+
+undefined
+
+
+
+
+ab -n 100  -c 10 -p 'post.txt' -T 'application/x-www-form-urlencoded' 'http://118.190.114.124:1088/?type=dl&act=user.InsertHYXX'

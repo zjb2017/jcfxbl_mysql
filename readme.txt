@@ -106,3 +106,8 @@ siege -c 并发数 -t 运行测试时间 URL
 
 siege -c 1000 -t 5s URL
 这里要注意的是-t后面的时间要带单位，s表示秒，如果不带，就是分钟，分钟的单位，还是挺长的，所以要注意一下。
+
+
+
+ab -n 10000000  -c 1000 -p 'post.txt' -T 'application/x-www-form-urlencoded' 'http://118.190.114.124:1088/?type=dl&act=user.InsertHYXX'
+

@@ -109,5 +109,5 @@ siege -c 1000 -t 5s URL
 
 
 
-ab -n 10000000  -c 1000 -p 'post.txt' -T 'application/x-www-form-urlencoded' 'http://118.190.114.124:1088/?type=dl&act=user.InsertHYXX'
+ab -n 100000  -c 800 -p 'post.txt' -T 'application/x-www-form-urlencoded' 'http://118.190.114.124:1089/?type=dl&act=user.InsertHYXX'
 

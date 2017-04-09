@@ -57,7 +57,7 @@ function LoadTempletScript(act) {
     return sqlModuleCache[act];
 }
 
-http.createServer(
+var server = http.createServer(
     function (request, response) {
         var postStr = '';
         request.setEncoding('utf8');
@@ -130,9 +130,12 @@ http.createServer(
             //console.log('request end');
         });
     }
-).listen(port);
+);//.listen(port);
 
+//连接数设置了，似乎意义不大！
+//server.maxConnections=2000;
 
+server.listen(port);
 console.log('JCServer listen:' + port);
 
 

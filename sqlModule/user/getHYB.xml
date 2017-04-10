@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<SqlScript Name="FindStudentByID">
+<SqlScript Name="FindHyxxByID">
   <Command>select * from t_hyb where id=@ID and dz=@DZ;</Command>
   <Parameters>
     <par name="@ID" type="string"/>
@@ -8,7 +8,7 @@
   <ResultType>JSON</ResultType>
   <Detail author="" LastEditTime="">
     <![CDATA[
-        djdjjjdjdj
+        此处书写功能说明或注意事项。
     ]]>    
   </Detail>
 </SqlScript>

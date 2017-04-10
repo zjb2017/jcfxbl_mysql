@@ -11,7 +11,7 @@
   <ResultType>JSON</ResultType>
   <Detail author="" LastEditTime="">
     <![CDATA[
-        djdjjjdjdj
+        本示例将调用Mysql存储过程进行Insert写入操作，并将写入成功后的返回值（）返回给前端
     ]]>    
   </Detail>
 </SqlScript>

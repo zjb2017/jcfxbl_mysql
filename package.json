@@ -1,19 +1,26 @@
 {
-  "name": "jcfx",
+  "name": "jcfxbl_mysql",
   "version": "1.0.0",
-  "description": "ZhangJianBo",
-  "main": "index.js",
+  "description": "这个分支用来压力测试",
+  "main": "config.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zjb2017/jcfxbl_mysql.git"
+  },
   "author": "",
-  "license": "GPL",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zjb2017/jcfxbl_mysql/issues"
+  },
+  "homepage": "https://github.com/zjb2017/jcfxbl_mysql#readme",
   "dependencies": {
     "debug": "^2.6.3",
     "mysql": "^2.13.0",
     "request": "^2.81.0",
     "sync_back": "^1.0.1",
-    "uuid": "^3.0.1",
-    "xml2js": "^0.4.17"
+    "uuid": "^3.0.1"
   }
 }

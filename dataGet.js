@@ -1,15 +1,9 @@
-var debug = require('debug')('getData');
+var debug = require('debug')('dataGet');
 var mysql = require('mysql');
 var util = require('util');
 const uuidV4 = require('uuid/v4');
 var run = require('sync_back').run;
-
-var db_conf = {
-    host: '127.0.0.1',
-    user: 'root',
-    password: '1q2w3e4r5t6y&*(',
-    database: 'testdb'
-};
+var db_conf = require('./config');
 
 var max = 100000;
 var success = 0;

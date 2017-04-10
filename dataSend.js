@@ -32,7 +32,7 @@ run(function* (api) {
         var timeStatr = new Date().getTime();
         yield post(conf.url, data[i], api.next);
         if (api.err) {
-            debug('请求失败:%o', api.err);
+            debug('请求失败');
             errCounter++;
             continue;
         }

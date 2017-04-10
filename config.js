@@ -1,8 +1,8 @@
 var attribute = {
-    host: '10.211.55.25',
+    host: '127.0.0.1',
     port: 3306,
     user: 'root',
-    password: '123456',
+    password: '1q2w3e4r5t6y&*(',
     database: 'testdb'
 };
 

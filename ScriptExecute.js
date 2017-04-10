@@ -16,6 +16,8 @@ var pool = mysql.createPool({
     multipleStatements: true
 });
 
+
+
 function ParseSqlParameters(Template, postData) {
     var r = {};
     r.ErrCode = 0;

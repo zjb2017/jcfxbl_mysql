@@ -146,3 +146,6 @@ undefined
 
 
 ab -n 100  -c 10 -p 'post.txt' -T 'application/x-www-form-urlencoded' 'http://118.190.114.124:1088/?type=dl&act=user.InsertHYXX'
+
+
+ab -n 100  -c 10 -p 'post.txt' -T 'application/x-www-form-urlencoded' 'http://127.0.0.1:1088/?type=dl&act=user.InsertHYXX'

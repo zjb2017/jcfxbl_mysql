@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<SqlScript Name="test">
+  <Command>insert into  t_data(id,c1,c2,c3,c4,c5,c6,c7,c8,c9) values(@id,@c1,@c2,@c3,@c4,@c5,@c6,@c7,@c8,@c9);</Command>
+  <Parameters>
+    <par name="@id" type="string"/>
+    <par name="@c1" type="string"/>
+    <par name="@c2" type="string"/>
+    <par name="@c3" type="string"/>
+    <par name="@c4" type="string"/>
+    <par name="@c5" type="string"/>
+    <par name="@c6" type="string"/>
+    <par name="@c7" type="string"/>
+    <par name="@c8" type="string"/>
+    <par name="@c9" type="string"/>
+  </Parameters>
+  <ResultType>JSON</ResultType>
+  <Detail author="" LastEditTime="">
+    <![CDATA[
+        djdjjjdjdj
+    ]]>    
+  </Detail>
+</SqlScript>

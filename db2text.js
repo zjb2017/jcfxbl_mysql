@@ -3,12 +3,11 @@ var mysql = require('mysql');
 var util = require('util');
 const uuidV4 = require('uuid/v4');
 var run = require('sync_back').run;
-var request = require('request');
+var fs = require('fs');
 var db_conf = require('./config');
 
 var conf = {
     'tableName': 't_data',
-    'url': 'http://10.0.0.5:1088?act=user.test&type=dl'
 }
 
 run(function* (api) {
@@ -26,20 +25,23 @@ run(function* (api) {
         yield api.return(api.err, '读取数据失败');
     debug('读到%s行数据', data.length);
 
-    debug('开始发送数据');
+    debug('开始写入数据');
     for (var i = 0; i < data.length; i++) {
-        var timeStatr = new Date().getTime();
-        yield post(conf.url, data[i], api.next);
+        var d = '';
+        for (var name in data[i])
+            d += name + '=' + data[i][name] + '&';
+        d = d.substring(0, d.length - 1);
+
+        yield fs.appendFile('data.txt', d + '\n', api.next);
         if (api.err) {
-            debug('请求失败');
+            debug('写入失败');
             errCounter++;
             continue;
         }
-        var timeEnd = new Date().getTime();
-        debug('请求成功 本次请求花费时间%s', timeEnd - timeStatr);
+        debug('进度 %s/%s', i + 1, data.length);
     }
 
-    debug('测试结束 共发送%s个包 成功%s个', data.length, data.length - errCounter);
+    debug('写入结束 共写入%s行 成功%s个', data.length, data.length - errCounter);
 
     yield api.return();
 }, function (err, data, api) {
@@ -51,12 +53,3 @@ run(function* (api) {
     if (err)
         debug("%s:%o", data, err);
 })
-
-function post(url, data, back) {
-    request.post({
-        url: url,
-        form: data
-    }, function (err, httpResponse, body) {
-        back(err, body);
-    })
-}

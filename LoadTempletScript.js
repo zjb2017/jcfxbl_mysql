@@ -5,7 +5,7 @@ var debug = require('debug')('jcSerlet:LoadTempletScript');
 function LoadTempletScript(JCCache,act) {
     if (typeof (JCCache.sqlModuleCache[act]) == 'undefined') {
         //https://nodejs.org/dist/latest-v6.x/docs/api/fs.html
-        var path = util.format('./sqlModule/%s.xml', act);//.replace('.', '/'));
+        var path = util.format('./sqlModule/%s.xml', act.replace(/\./g, '/'));
         if (fs.existsSync(path)) {
             moduleFileData = fs.readFileSync(path);
             JCCache.sqlModuleCache[act] = moduleFileData.toString();

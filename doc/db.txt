@@ -1,0 +1,30 @@
+
+
+CREATE TABLE `t_hyb` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `xm` varchar(45) DEFAULT NULL,
+  `xb` varchar(45) DEFAULT NULL,
+  `dz` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=147925 DEFAULT CHARSET=utf8;
+
+
+CREATE DEFINER=`root`@`%` PROCEDURE `ACT_ADD_HY`(
+XM VARCHAR(500),
+XB VARCHAR(500),
+DZ VARCHAR(500),
+out returnValue int,
+out returnMsg VARCHAR(500)
+)
+BEGIN
+
+insert into t_hyb(xm,xb,dz) value(XM,XB,DZ);
+
+set returnValue = 1;
+set returnMsg = 'hello';
+
+select * from t_hyb limit 2;
+
+END
+
+

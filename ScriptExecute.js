@@ -79,33 +79,104 @@ var ScriptExecute = function (Template, postData, callback) {
             if (err) {
                 //conn.release();
                 console.log('ERR_DB_CONNECT_FAILED');
-                callback('ERR_DB_CONNECT_FAILED', null, null, null);
+                callback(1,'ERR_DB_CONNECT_FAILED', null, null);
             } else {
                 conn.query(sql, function (qerr, rows, fields) {
 
                     //事件驱动回调   
                     if (qerr) {
                         debug("ERR_DB_QUERY_FAILED:%s", sql);
-                        callback('ERR_DB_QUERY_FAILED', -1, null, null);
+                        callback(1,'ERR_DB_QUERY_FAILED', null, null);
                         //释放连接  
                         conn.release();
-
                     } else {
-                        var returnValue;
-                        var returnMsg;
+                        var ResultCount=rows.length;
+
+                        /*
                         var Result = {};
-                        var returnResult = {};
+                        var Tables={};
+                        Tables[0]={};
+                         Tables[0].rows={};
+                         Tables[0].totalCount=0;
+
+                        var PAMROutPut={};
+                        var PAMROutPut_count=0;
+                        var OkPacket={};
+                        var OkPacket_count=0;
+
+
+                        //Result.Table={};
+                        //Result.Table.rows={};
+                        //Result.Table.totalCount=0;
+
+                        /*
+                       
+
+
+                        if(rows.__proto__.constructor.name=='Array')
+                        {
+
+                        }
+
+
                         for (var i = 0; i < rows.length; i++) {
-                            if (rows[i].__proto__.constructor.name == 'OkPacket') {
+
+                            switch(rows[i].__proto__.constructor.name)
+                            {
+                                case 'OkPacket':
+                                {
+                                     OkPacket[OkPacket_count++]=rows[i];
+                                     break;
+                                }
+                                case '':{
+                                    PAMROutPut[PAMROutPut_count] = rows[i];
+                                    break;
+                                }
+                                case 'Array':
+                                {
+                                     Tables[i]={};
+                                     Tables[i].rows = rows[i];
+                                     Tables[i].totalCount=rows[i].length;
+                                     break;
+                                }
+                                case 'RowDataPacket':
+                                {
+                                    break;
+                                }
+                                default:
+                                {
+                                    debug("%O",rows[i]);
+                                    break;
+                                }
+                            
+                            }
+                        }
+                           /* if (rows[i].__proto__.constructor.name == 'OkPacket') {
                                 returnResult['PAMROutPut'] = rows[i + 1];
                                 break;
                             } else {
-                                Result[i] = rows[i];
-                            }
-                        }
+                                if(rows[i].__proto__.constructor.name == 'RowDataPacket')
+                                {
+
+                                }else{
+
+                                }
+*/
+                                //Result[i] = rows[i];
+                                /*Result.Table[ResultCount]={};
+                                Result.Table[ResultCount].rows[i]=rows[i];
+                                Result.Table[ResultCount].totalCount=rows[i].length;*/
+                               // ResultCount++;
+                            //}
+                        //}
                         //释放连接  
-                        returnResult['Result'] = Result;
-                        callback(null, returnValue, returnMsg, returnResult);
+                       // var returnResult = {};
+                        
+                       // returnResult['DataSet'] = Tables;
+                       // returnResult['PAMROutPut'] = PAMROutPut;
+                       // returnResult['OkPacket'] = OkPacket;
+
+                        callback(0, 'QUERY_OK', rows,ResultCount);
                         conn.release();
                     }
                 });

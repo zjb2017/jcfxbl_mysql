@@ -20,12 +20,12 @@ function HttpContent(JCCache, request,response, postStr) {
     var actType = urlParams.query.type;//指令类别
     if (typeof (act) == 'undefined' || act == '' || act == null) {
         console.log('ERR_REQ_ACT_UNDEFINED' + ':' + act);
-        ResponseEnd(JCCache,response, 'failed', 'ERR_REQ_ACT_UNDEFINED', null, null, null);
+        ResponseEnd(JCCache,response, 'false', 'ERR_REQ_ACT_UNDEFINED', null, null, null);
         return;
     }
     if (typeof (actType) == 'undefined' || actType == '' || actType == null) {
         console.log('ERR_REQ_TYPE_UNDEFINED' + ':' + actType);
-        ResponseEnd(JCCache,response, 'failed', 'ERR_REQ_TYPE_UNDEFINED', null, null, null);
+        ResponseEnd(JCCache,response, 'false', 'ERR_REQ_TYPE_UNDEFINED', null, null, null);
         return;
     }
 
@@ -33,20 +33,20 @@ function HttpContent(JCCache, request,response, postStr) {
         case 'dl': {
             var TemplateScript = LoadTempletScript(JCCache, act);
             if (TemplateScript == null) {
-                ResponseEnd(JCCache,response, 'failed', 'ERR_TEMPLET_FILE_READ_FAILED', null, null, null);
+                ResponseEnd(JCCache,response, 'false', 'ERR_TEMPLET_FILE_READ_FAILED', null, null, null);
             } else {
                 xmlJS.parseString(moduleFileData, function (err, data) {
                     if (err) {
                         console.log('ERR_TEMPLET_XML_PARSE_FAILED:' + act);
                         debug('%s', data);
-                        ResponseEnd(JCCache,response, 'failed', 'ERR_TEMPLET_XML_PARSE_FAILED', null, null, null);
+                        ResponseEnd(JCCache,response, 'false', 'ERR_TEMPLET_XML_PARSE_FAILED', null, null, null);
                     } else {
-                        ScriptExecute(data, postData, function (ErrCode, returnValue, returnMsg, returnResult) {
-                            if (ErrCode) {
-                                ResponseEnd(JCCache,response, 'failed', ErrCode, null, null, null);
+                        ScriptExecute(data, postData, function (ErrCode, msg, result,resultCount) {
+                            if (ErrCode>0) {
+                                ResponseEnd(JCCache,response, 'false', ErrCode,msg, null, null);
                             } else {
                                 //req_count_success++;
-                                ResponseEnd(JCCache,response, 'success', null, returnValue, returnMsg, returnResult);
+                                ResponseEnd(JCCache,response, 'true', ErrCode, msg, result,resultCount);
                             }
                         });
 
@@ -70,7 +70,7 @@ function HttpContent(JCCache, request,response, postStr) {
         default:
             {
                 console.log('ERR_REQ_TYPE_UNKNOWN :[' + actType + ']');
-                ResponseEnd(response, 'failed', 'ERR_REQ_TYPE_UNKNOWN', null, null, null);
+                ResponseEnd(response, 'false', 'ERR_REQ_TYPE_UNKNOWN', null, null, null);
                 break;
             }
     }

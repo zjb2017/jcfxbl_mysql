@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<SqlScript Name="添加会员信息D">
+  <Command><![CDATA[insert into t_hyb(xm,xb,dz) value(@XM,@XB,@DZ);]]></Command>
+  <Parameters>
+    <par name="@XM" type="string" dir="IN"/>
+    <par name="@XB" type="string" dir="IN"/>
+    <par name="@DZ" type="string" dir="IN"/>
+  </Parameters>
+  <ResultType>JSON</ResultType>
+  <Detail author="" LastEditTime="">
+    <![CDATA[
+        djdjjjdjdj
+    ]]>    
+  </Detail>
+</SqlScript>

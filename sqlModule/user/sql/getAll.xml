@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <SqlScript Name="FindStudentByID">
-  <Command>select * from t_hyb limit 5;</Command>
-  
+  <Command><![CDATA[select * from t_hyb limit 5;]]></Command>
+  <Parameters>
+  </Parameters>
   <ResultType>JSON</ResultType>
   <Detail author="" LastEditTime="">
     <![CDATA[

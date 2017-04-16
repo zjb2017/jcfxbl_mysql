@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <SqlScript Name="FindStudentByID">
-  <Command><![CDATA[select * from t_hyb where id<17004 limit 5;select * from t_hyb where id<17004 limit 5;]]></Command>
-  <Parameters>
+  <Command><![CDATA[DELETE FROM t_hyb where id=@ID;]]></Command>
+   <Parameters>
+    <par name="@ID" type="string" dir="IN"/>
   </Parameters>
   <ResultType>JSON</ResultType>
   <Detail author="" LastEditTime="">

@@ -1,9 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <SqlScript Name="FindHyxxByID">
-  <Command>select * from t_hyb where id=@ID and dz=@DZ;</Command>
+  <Command>select * from t_hyb where id=@ID;</Command>
   <Parameters>
     <par name="@ID" type="string"/>
-    <par name="@DZ" type="string"/>
   </Parameters>
   <ResultType>JSON</ResultType>
   <Detail author="" LastEditTime="">

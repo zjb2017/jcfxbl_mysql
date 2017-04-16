@@ -148,3 +148,98 @@ ab -n 100  -c 10 -p 'post.txt' -T 'application/x-www-form-urlencoded' 'http://11
 
 
 ab -n 100  -c 10 -p 'post.txt' -T 'application/x-www-form-urlencoded' 'http://127.0.0.1:1088/?type=dl&act=user.InsertHYXX'
+
+
+
+
+/*
+                        var Result = {};
+                        var Tables={};
+                        Tables[0]={};
+                         Tables[0].rows={};
+                         Tables[0].totalCount=0;
+
+                        var PAMROutPut={};
+                        var PAMROutPut_count=0;
+                        var OkPacket={};
+                        var OkPacket_count=0;
+
+
+                        //Result.Table={};
+                        //Result.Table.rows={};
+                        //Result.Table.totalCount=0;
+
+                        /*
+                       
+
+
+                        if(rows.__proto__.constructor.name=='Array')
+                        {
+
+                        }
+
+
+                        for (var i = 0; i < rows.length; i++) {
+
+                            switch(rows[i].__proto__.constructor.name)
+                            {
+                                case 'OkPacket':
+                                {
+                                     OkPacket[OkPacket_count++]=rows[i];
+                                     break;
+                                }
+                                case '':{
+                                    PAMROutPut[PAMROutPut_count] = rows[i];
+                                    break;
+                                }
+                                case 'Array':
+                                {
+                                     Tables[i]={};
+                                     Tables[i].rows = rows[i];
+                                     Tables[i].totalCount=rows[i].length;
+                                     break;
+                                }
+                                case 'RowDataPacket':
+                                {
+                                    break;
+                                }
+                                default:
+                                {
+                                    debug("%O",rows[i]);
+                                    break;
+                                }
+                            
+                            }
+                        }
+                           /* if (rows[i].__proto__.constructor.name == 'OkPacket') {
+                                returnResult['PAMROutPut'] = rows[i + 1];
+                                break;
+                            } else {
+                                if(rows[i].__proto__.constructor.name == 'RowDataPacket')
+                                {
+
+                                }else{
+
+                                }
+*/
+                                //Result[i] = rows[i];
+                                /*Result.Table[ResultCount]={};
+                                Result.Table[ResultCount].rows[i]=rows[i];
+                                Result.Table[ResultCount].totalCount=rows[i].length;*/
+                               // ResultCount++;
+                            //}
+                        //}
+                        //释放连接  
+                       // var returnResult = {};
+                        
+                       // returnResult['DataSet'] = Tables;
+                       // returnResult['PAMROutPut'] = PAMROutPut;
+                       // returnResult['OkPacket'] = OkPacket;
+
+
+
+
+
+
+
+                       

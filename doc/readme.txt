@@ -1,7 +1,7 @@
 wget https://nodejs.org/dist/v6.10.2/node-v6.10.2-linux-x64.tar.xz
 
 解压  
-tar -xJf node-v6.10.2-linux-x64.tar.xz 
+tar -xvf node-v6.10.2-linux-x64.tar.xz 
 移到通用的软件安装目录 /opt/ 
 sudo mv node-v6.10.2-linux-x64 /opt/
 安装 npm 和 node 命令到系统命令 

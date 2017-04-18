@@ -15,6 +15,11 @@ v4.4.4
 npm -v
 
 
+//Box 盒子内
+
+sudo ln -s /opt/node-v6.10.2-linux-armv7l/bin/node /usr/local/bin/node 
+sudo ln -s /opt/node-v6.10.2-linux-armv7l/bin/npm /usr/local/bin/npm
+/opt/node-v6.10.2-linux-armv7l
 
 
 linux 下启用调试  输出 的参数

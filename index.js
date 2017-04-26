@@ -20,8 +20,8 @@ JCCache.SrvState.StartTime = new Date();
 
 
 
-//统计1分钟内的平均请求／处理频次
-var TimerTick = 1000 * 60;
+//统计60分钟内的平均请求／处理频次
+var TimerTick = 1000 * 60 * 60;
 var mydate_t0 = new Date();
 setInterval(function () {
     var mydate = new Date();
@@ -32,9 +32,9 @@ setInterval(function () {
 
     var req_pv = JCCache.SrvState.RequestCount / T;
     var res_pv = JCCache.SrvState.ResponseCount / T;
-    req_pv=req_pv.toFixed(2);
-    res_pv=res_pv.toFixed(2);
-    console.log('[' + mydate_t0.getHours() + ':' + mydate_t0.getMinutes() + ':' + mydate_t0.getSeconds() + '] req_count： ' + JCCache.SrvState.RequestCount + '(' + req_pv + '/s) success:' + JCCache.SrvState.ResponseCount + '(' + res_pv + '/s)');
+    req_pv = req_pv.toFixed(2);
+    res_pv = res_pv.toFixed(2);
+    console.log(mydate.toLocaleString() + ' req_count： ' + JCCache.SrvState.RequestCount + '(' + req_pv + '/s) success:' + JCCache.SrvState.ResponseCount + '(' + res_pv + '/s)');
     JCCache.SrvState.RequestCount = 0;
     JCCache.SrvState.ResponseCount = 0;
     mydate_t0 = new Date();
@@ -69,6 +69,7 @@ var server = http.createServer(
 
 //启动服务
 server.listen(port);
-console.log('JCServer listen:' + port);
 
 
+var myDate = new Date();
+console.log(myDate.toLocaleString() + '  JCServer listen:' + port);

@@ -44,7 +44,8 @@ function ParseSqlParameters(Template, postData) {
                         selectSql += par_name + ',';
                     } else {
                         if (typeof (par_value) == 'undefined') {
-                            console.log('ERR_PARAM_UNDEFINED:' + par_name);
+                            var myDate = new Date();
+                            console.error(myDate.toLocaleString() + ' ERR_PARAM_UNDEFINED:' + par_name);
                             r.ErrCode = 1;
                             r.ErrMsg = 'ERR_PARAM_UNDEFINED';
                         } else {
@@ -60,6 +61,9 @@ function ParseSqlParameters(Template, postData) {
     } catch (err) {
         r.ErrCode = 1;
         r.ErrMsg = 'ERR_TEMPLET_PARAM_PARSE';
+
+        var myDate = new Date();
+        console.error(myDate.toLocaleString() + ' ERR_TEMPLET_PARAM_PARSE');
     }
     r.sql = sql;
     r.selectSql = selectSql;
@@ -78,20 +82,23 @@ var ScriptExecute = function (Template, postData, callback) {
         pool.getConnection(function (err, conn) {
             if (err) {
                 //conn.release();
-                console.log('ERR_DB_CONNECT_FAILED');
-                callback(1,'ERR_DB_CONNECT_FAILED', null, null);
+                var myDate = new Date();
+                console.error(myDate.toLocaleString() + ' ERR_DB_CONNECT_FAILED');
+                callback(1, 'ERR_DB_CONNECT_FAILED', null, null);
             } else {
                 conn.query(sql, function (qerr, rows, fields) {
 
                     //事件驱动回调   
                     if (qerr) {
-                        debug("ERR_DB_QUERY_FAILED:%s", sql);
-                        callback(1,'ERR_DB_QUERY_FAILED', null, null);
+                        callback(1, 'ERR_DB_QUERY_FAILED', null, null);
+                        var myDate = new Date();
+                        console.error(myDate.toLocaleString() + ' ERR_DB_QUERY_FAILED');
+                        console.error(sql);
                         //释放连接  
                         conn.release();
                     } else {
-                        var ResultCount=rows.length;
-                        callback(0, 'QUERY_OK', rows,ResultCount);
+                        var ResultCount = rows.length;
+                        callback(0, 'QUERY_OK', rows, ResultCount);
                         conn.release();
                     }
                 });

@@ -19,6 +19,7 @@ npm -v
 
 sudo ln -s /opt/node-v6.10.2-linux-armv7l/bin/node /usr/local/bin/node 
 sudo ln -s /opt/node-v6.10.2-linux-armv7l/bin/npm /usr/local/bin/npm
+
 /opt/node-v6.10.2-linux-armv7l
 
 

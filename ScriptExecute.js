@@ -49,7 +49,19 @@ function ParseSqlParameters(Template, postData) {
                             r.ErrCode = 1;
                             r.ErrMsg = 'ERR_PARAM_UNDEFINED';
                         } else {
-                            sql = sql.replace(par_name, mysql.escape(par_value));
+                            switch (par_type) {
+                                case 'Int':
+                                    {
+                                        sql = sql.replace(par_name, Number(par_value).toString());
+                                        break;
+                                    }
+                                default:
+                                    {
+                                        sql = sql.replace(par_name, mysql.escape(par_value));
+                                        break;
+                                    }
+                            }
+
                         }
                     }
                     //debug('name:%s,value:%s', par.name, par.type);

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<SqlScript Name="添加学生信息">
+  <Command><![CDATA[insert into t_xsb(xh,xm,xb,pwd) value(@XH,@XM,@XB,@PWD);]]></Command>
+  <Parameters>
+    <par name="@XH" type="string" dir="IN"/>
+    <par name="@XM" type="string" dir="IN"/>
+    <par name="@XB" type="string" dir="IN"/>
+    <par name="@PWD" type="string" dir="IN"/>
+  </Parameters>
+  <ResultType>JSON</ResultType>
+  <Detail author="" LastEditTime="">
+    <![CDATA[
+        djdjjjdjdj
+    ]]>    
+  </Detail>
+</SqlScript>

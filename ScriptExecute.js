@@ -102,10 +102,11 @@ var ScriptExecute = function (Template, postData, callback) {
 
                     //事件驱动回调   
                     if (qerr) {
-                        callback(1, 'ERR_DB_QUERY_FAILED', null, null);
+                        callback(qerr.errno, 'ERR_DB_QUERY_FAILED:'+qerr.code, null, null);
                         var myDate = new Date();
-                        console.error(myDate.toLocaleString() + ' ERR_DB_QUERY_FAILED');
+                        console.error(myDate.toLocaleString() + ' ERR_DB_QUERY_FAILED:'+qerr.code);
                         console.error(sql);
+                        console.error(qerr.message);
                         //释放连接  
                         conn.release();
                     } else {

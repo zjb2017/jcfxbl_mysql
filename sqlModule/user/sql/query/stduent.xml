@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<SqlScript Name="添加学生信息">
+  <Command><![CDATA[select * from t_xsb;]]></Command>
+  <Parameters>
+  
+  </Parameters>
+  <ResultType>JSON</ResultType>
+  <Detail author="" LastEditTime="">
+    <![CDATA[
+        djdjjjdjdj
+    ]]>    
+  </Detail>
+</SqlScript>

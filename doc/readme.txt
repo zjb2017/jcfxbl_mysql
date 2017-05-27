@@ -248,4 +248,24 @@ ab -n 100  -c 10 -p 'post.txt' -T 'application/x-www-form-urlencoded' 'http://12
 
 
 
-                       
+                       进入主题：
+
+　　修改/etc/profile文件，在末尾添加以下内容
+
+1
+2
+export NODE_HOME=/usr/local/node  //Node所在路径
+export PATH=$NODE_HOME/bin:$PATH
+　　修改完成后需要重新登陆才能生效，也可以执行命令 source /etc/profile 或者 . /etc/profile来生效（注意。与/etc/profile中有一个空格）
+
+     查看PATH
+
+1
+2
+3
+4
+查看单个环境变量
+echo $PATH
+查看所有环境变量
+env
+

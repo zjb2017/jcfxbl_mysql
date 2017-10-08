@@ -1,6 +1,6 @@
 var util = require('util');
 var fs = require("fs");
-var debug = require('debug')('jcSerlet:LoadTempletScript');
+var debug = require('debug')('jcDAL:LoadTempletScript');
 
 function LoadTempletScript(JCCache,act) {
     if (typeof (JCCache.sqlModuleCache[act]) == 'undefined') {

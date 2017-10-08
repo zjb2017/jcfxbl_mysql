@@ -1,4 +1,4 @@
-var debug = require('debug')('jcSerlet:LoadScript');
+var debug = require('debug')('jcDAL:LoadScript');
 var xmlJS = require('xml2js');
 var util = require('util');
 var config = require('./config.js');

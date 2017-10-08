@@ -1,5 +1,5 @@
 var http = require('http');
-var debug = require('debug')('jcSerlet:main');
+var debug = require('debug')('jcDAL:main');
 var HttpContent = require('./HttpContext.js').HttpContent;
 
 var port = 1088;
@@ -72,4 +72,4 @@ server.listen(port);
 
 
 var myDate = new Date();
-console.log(myDate.toLocaleString() + '  JCServer listen:' + port);
+console.log(myDate.toLocaleString() + '  JC DAL Server listen:' + port);

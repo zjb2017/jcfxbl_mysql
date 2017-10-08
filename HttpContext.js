@@ -8,7 +8,7 @@ var LoadTempletScript = require('./LoadTempletScript.js').LoadTempletScript;
 var querystring = require('querystring');
 var util = require('util');
 var url = require('url');
-var debug = require('debug')('jcSerlet:HttpContent');
+var debug = require('debug')('jcDAL:HttpContent');
 
 
 

@@ -39,6 +39,7 @@ function ParseSqlParameters(Template, postData) {
                     var par_type = par.type;
                     var par_dir = par.dir;
                     var par_value = postData[par_name.replace('@', '')];
+                    //处理存储过程out参数返回值
                     if (par_dir == 'OUT') {
                         if (selectSql == '') selectSql = 'select ';
                         selectSql += par_name + ',';
